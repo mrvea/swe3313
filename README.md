@@ -16,7 +16,7 @@ $ tree /path/to/project/pizza
 ├── pkg
 └── src
     └── github.com
-        └── project
+        └── class
             └── pizza
                 ...
 ```
@@ -167,7 +167,7 @@ If you need to add data to the test database, you should follow these guidelines
 8. If desired, use `util/dropdb`, `util/run migrate`, and `util/loadseed` to get your development database to where you want it to be.
 
 
-## Build Script Usage
+<!-- ## Build Script Usage
 
 * `util/build`  -- defaults to linux
 * `util/build linux`
@@ -176,10 +176,10 @@ If you need to add data to the test database, you should follow these guidelines
 
 Architecture is specified as amd64 for now, and cannot be altered by command line args.
 This script compiles the go application, and copies files required to run the app in production
-to the dist folder.
+to the dist folder. -->
 
 
-## Deployment (mac/linux only for now)
+<!-- ## Deployment (mac/linux only for now)
 
 * `util/deploy {environment}` eg. `util/deploy staging` or `util/deploy production`
 
@@ -187,5 +187,4 @@ to the dist folder.
 ### Notes on Deployment
 Deployment also executes the production build - there is no requirement to build before deploy.
 
-Deployment does not clean previous deployments currently.  Existing files are overwritten and new files are added.  If files move or are renamed, they will not be deleted from the production server.
-# swe3313
+Deployment does not clean previous deployments currently.  Existing files are overwritten and new files are added.  If files move or are renamed, they will not be deleted from the production server. -->

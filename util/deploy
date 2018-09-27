@@ -1,0 +1,57 @@
+#!/bin/bash
+
+## TODO build to all reduntant environments
+INSTALL_TARGET="45.79.156.48"
+INSTALL_TYPE="$1"
+INSTALL_DIR="/opt/orb/staging"
+SERVICE_FILENAME="orbd-staging.service"
+SERVICE_FILEPATH="${INSTALL_DIR}/${SERVICE_FILENAME}"
+DEL_SERVICE_FILEPATH="${INSTALL_DIR}/orbd.service"
+ENV_FILENAME="${INSTALL_DIR}/orb.env.staging"
+DEL_ENV_FILENAME="${INSTALL_DIR}/orb.env.production"
+
+# DEFAULT TO STAGING
+if [ "${INSTALL_TYPE}" == "production" ]; then
+    INSTALL_DIR="/opt/orb/production"
+    SERVICE_FILENAME="orbd.service"
+    SERVICE_FILEPATH="${INSTALL_DIR}/${SERVICE_FILENAME}"
+    DEL_SERVICE_FILEPATH="${INSTALL_DIR}/orbd-staging.service"
+    ENV_FILENAME="${INSTALL_DIR}/orb.env.production"
+    DEL_ENV_FILENAME="${INSTALL_DIR}/orb.env.staging"
+else
+    INSTALL_TYPE="staging"
+fi
+
+echo Executing production build.
+./util/build
+
+if [[ $? != 0 ]]; then
+    exit 1;
+fi
+
+echo "Cleaning previous build."
+ssh -t eyesore@${INSTALL_TARGET} "sudo rm -R ${INSTALL_DIR}"
+
+echo "Ensuring file structure exists."
+ssh -t eyesore@${INSTALL_TARGET} "sudo mkdir -p ${INSTALL_DIR} && sudo chown eyesore:eyesore ${INSTALL_DIR}"
+
+## TODO clean previous build
+
+echo Copying files...
+rsync -r -v dist/linux/amd64/orb/* eyesore@${INSTALL_TARGET}:${INSTALL_DIR}
+
+echo "Updating deployed service..."
+ssh -t eyesore@${INSTALL_TARGET} "sudo mv ${SERVICE_FILEPATH} /etc/systemd/system && rm ${DEL_SERVICE_FILEPATH}"
+
+echo "Updating run script..."
+rsync -v server_config/orb.sh eyesore@${INSTALL_TARGET}:${INSTALL_DIR}/orb.sh
+
+echo "Installing crontab..."
+cat server_config/crontab | ssh eyesore@${INSTALL_TARGET} crontab
+
+echo "Installing environment..."
+ssh -t eyesore@${INSTALL_TARGET} "sudo mv ${ENV_FILENAME} ${INSTALL_DIR}/orb.env && rm ${DEL_ENV_FILENAME}"
+
+## might be a good idea to run as eyesore (or other user) instead of root - not sure.
+echo Restarting webserver...
+ssh -t eyesore@${INSTALL_TARGET} "sudo systemctl daemon-reload && sudo systemctl restart ${SERVICE_FILENAME}"

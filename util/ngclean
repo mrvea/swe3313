@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mv webroot/script/systemjs.config.js .
+find webroot/script -name "*.js" -type f -delete
+find webroot/script -name "*.js.map" -type f -delete
+mv ./systemjs.config.js webroot/script

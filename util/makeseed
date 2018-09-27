@@ -1,0 +1,14 @@
+#!/bin/bash
+
+FILENAME=$1
+if [ -z "${FILENAME}" ]; then
+    echo "You must specify a name for your seed."
+    exit 1;
+fi
+
+echo "Dumping data."
+mkdir -p schema/seeds
+docker-compose exec database \
+    mysqldump -u root --no-create-info --ignore-table=gomigrate orb > schema/seeds/${FILENAME}.sql
+
+echo "Done."

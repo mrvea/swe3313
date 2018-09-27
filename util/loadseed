@@ -1,0 +1,17 @@
+#!/bin/bash
+
+FILENAME="$1.sql"
+LOCAL_SEED_DIR='schema/seeds/'
+SEED_DIR="/${LOCAL_SEED_DIR}" #direct mount at root
+if [ -z "${FILENAME}" ]; then
+    echo "You need to specify a seed name."
+    exit 1;
+fi
+if [ ! -f "${LOCAL_SEED_DIR}${FILENAME}" ]; then
+    echo "${FILENAME}.sql" does not exist.  Exiting.
+    exit 1
+fi
+
+echo Adding seed data.
+docker-compose exec database bash -c "\
+    mysql -u root orb < ${SEED_DIR}${FILENAME}"

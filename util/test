@@ -1,0 +1,4 @@
+#!/bin/bash
+PASSED_ARGS="${@}"
+
+docker-compose -f docker-compose.test.yml run --rm -e PASSED_ARGS="${PASSED_ARGS}" app_test

@@ -1,0 +1,2 @@
+DROP DATABASE `pizza`;
+CREATE DATABASE `pizza`;

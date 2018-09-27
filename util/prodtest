@@ -1,0 +1,6 @@
+#!/bin/bash
+# sometimes httpd fails to launch and I'm not sure why
+
+util/prodbuild
+docker-compose stop
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build

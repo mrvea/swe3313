@@ -1,0 +1,14 @@
+#!/bin/bash
+
+docker-compose stop database
+
+echo Destroying container and data volume.
+docker-compose rm -v database
+
+echo Rebuilding database.
+docker-compose create database
+
+echo Restarting containers.
+docker-compose start database
+
+echo "Done.  You probably want to run 'util/run migrate' to bring the database back up to the latest version."

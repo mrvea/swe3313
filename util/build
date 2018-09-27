@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# $1 will be the platform being built for
+TARGET=$1
+if [[ -z "${TARGET}" ]]; then
+    TARGET="linux"
+fi
+
+OUTFILE="orb"
+OUTPATH="dist/${TARGET}/amd64/orb/"
+WEBROOT="${OUTPATH}webroot/"
+SCRIPTPATH="${WEBROOT}ui/dist/"
+OUT="${OUTPATH}${OUTFILE}"
+
+rm -rf $OUTPATH
+
+export GOOS="${TARGET}"
+export GOARCH="amd64"
+
+echo Target OS: "${GOOS}"
+echo Target ARCH: "${GOARCH}"
+
+mkdir -p "${OUTPATH}"
+
+echo "Stopping any running dev machines..."
+docker-compose stop
+
+echo "Compiling backend application..."
+go build -o $OUT -v app.go
+
+echo "Copying required files for web application..."
+cp -R webroot templates schema "${OUTPATH}" # nested dirs are ok
+
+mkdir -p ${SCRIPTPATH}
+# TODO ensure we have all npm packages
+echo "Compiling frontend application..."
+docker-compose run --entrypoint ng ng build -prod --vendor-chunk false
+if [[ $? != 0 ]]; then
+    exit 1;
+fi
+
+# TODO tj uglify
+
+# janky way of renaming - the prod bundle has the hash as part of the filename!
+cp ui/dist/ui/main.*.js ${UIDISTPATH}main.js
+cp ui/dist/ui/inline.*.js ${UIDISTPATH}inline.js
+cp ui/dist/ui/polyfills.*.js ${UIDISTPATH}polyfills.js
+cp ui/dist/ui/scripts.*.js ${UIDISTPATH}scripts.js
+cp ui/dist/ui/styles.*.css ${UIDISTPATH}styles.css
+
+echo "Copying environment files..."
+cp server_config/orb.env.* ${OUTPATH}
+mkdir ${OUTPATH}ui-app
+cp ui/package.json ${OUTPATH}ui
+
+echo "Copying service configurations..."
+# TODO - only get the one we need?
+cp server_config/*.service ${OUTPATH}
+
+echo "Done!"
+

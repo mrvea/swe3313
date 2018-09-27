@@ -1,0 +1,13 @@
+# /etc/systemd/system/pizzad.service
+# enable with systemctl enable pizzad
+# TODO write pidfile from app?
+# TODO enable reload, restart, stop
+
+[Service]
+Restart=always
+PIDFile=/var/run/pizzad/production/pizzad.pid
+ExecStart=/opt/pizza/production/pizza.sh
+
+[Install]
+Alias=pizza.service
+WantedBy=multi-user.target

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+FILENAME="auto_tests_data"
+DATA_FILENAME="auto_tests_data"
+STRUCTURE_FILENAME="auto_tests_structure"
+LOCAL_TEST_DIR="schema/test/"
+TEST_DIR="/${LOCAL_TEST_DIR}"
+
+if [ ! -f "${LOCAL_TEST_DIR}${DATA_FILENAME}.sql" ]; then
+    echo "${DATA_FILENAME}.sql does not exist. Exiting."
+    exit 1;
+fi
+
+if [ ! -f "${LOCAL_TEST_DIR}${STRUCTURE_FILENAME}.sql" ]; then
+    echo "${STRUCTURE_FILENAME}.sql does not exist. Exiting."
+    exit 1;
+fi
+
+echo "Destroying development database."
+util/dropdb
+
+util/run dbconnect
+
+echo "Inserting test schema into database."
+docker-compose exec database bash -c "\
+    mysql -u root orb < ${TEST_DIR}${STRUCTURE_FILENAME}.sql"
+
+echo "Inserting test data into database."
+docker-compose exec database bash -c "\
+    mysql -u root orb < ${TEST_DIR}${DATA_FILENAME}.sql"
+
+echo "Bringing database up to the latest version."
+util/run migrate
+
+echo "Done.  Add any data that you wish to add, then dump it back out with util/overwrite_testdb"

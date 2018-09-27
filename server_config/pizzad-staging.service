@@ -1,0 +1,12 @@
+# /etc/systemd/system/pizzad-staging.service
+# enable with systemctl enable pizzad-staging
+
+# TODO - same as production
+## We do not restart this or even install in MU
+## It is non-essential - ideally it doesn't run unless it is being used.
+
+[Service]
+PIDFile=/var/run/pizzad/staging/pizzad.pid
+ExecStart=/opt/pizza/staging/pizza.sh
+
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DATA_FILENAME="auto_tests_data"
+STRUCTURE_FILENAME="auto_tests_structure"
+
+
+mkdir -p schema/test
+
+echo "Dumping data..."
+docker-compose exec database \
+    mysqldump -u root --no-create-info orb > schema/test/${DATA_FILENAME}.sql
+
+echo "Dumping structure..."
+docker-compose exec database \
+    mysqldump -u root --no-data orb > schema/test/${STRUCTURE_FILENAME}.sql
+
+echo "Done."

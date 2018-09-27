@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  ng:
+    environment: 
+      CHROME_BIN: /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome

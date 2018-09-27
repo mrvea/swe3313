@@ -1,0 +1,6 @@
+#!/bin/bash
+PASSED_ARGS="${@}"
+
+docker-compose exec backend sh -c "cd /go/src/github.com/class/pizza && \
+    go install && \
+    /go/bin/pizza ${PASSED_ARGS}"

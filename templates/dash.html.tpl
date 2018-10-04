@@ -10,13 +10,12 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-        <title>Pizza</title>
+        <title>Geb's Pizza</title>
         <!-- <link rel="stylesheet" type="text/css" href="/styles/framework.css"> -->
         <link rel="stylesheet" type="text/css" href="/styles/font-awesome.css">
         <!-- <link rel="stylesheet" type="text/css" href="/styles/animate.css"> -->
         <!-- <link rel="stylesheet" type="text/css" href="/styles/grids.inuit.css"> -->
         <link href="https://unpkg.com/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/styles/style.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <script type="text/javascript">

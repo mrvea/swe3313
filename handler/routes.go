@@ -28,14 +28,14 @@ func Routes(e *env.Env) (*httprouter.Router, error) {
 	r.Handler("POST", "/login", ab)
 	r.Handler("GET", "/recover", ab)
 	r.Handler("POST", "/recover", ab)
+	r.Handler("GET", "/register", ab)
+	r.Handler("POST", "/register", ab)
 	r.Handler("GET", "/recover/complete", ab)
 	r.Handler("POST", "/recover/complete", ab)
-	r.Handler("GET", "/home", ab)
 
 	// main logged in template
 	// New(e, "/", UserHome).Route("GET", r)
-	// New(e, "/dash/*uiroute", UserHome).Route("GET", r)
-	New(e, "/home/*uiroute", UserHome).Route("GET", r)
+	New(e, "/dash/*uiroute", UserHome).Route("GET", r)
 	// users
 
 	if e.EnvironmentName == "production" {

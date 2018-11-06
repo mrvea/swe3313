@@ -99,15 +99,11 @@ func (h *Handler) Execute(w http.ResponseWriter, r *http.Request) error {
 		h.Env.SetAuth(ab)
 	}
 	u, err := h.Env.AB.CurrentUser(w, r)
-	log.Debug("path: ", r.URL.Path)
-	if err != nil && r.URL.Path != "/home/" {
+	if err != nil {
 		return HTTPError{http.StatusInternalServerError, err}
+	} else if u == nil {
+		return NewForbiddenError()
 	}
-	// if err != nil {
-	// 	return HTTPError{http.StatusInternalServerError, err}
-	// } else if u == nil {
-	// 	return NewForbiddenError()
-	// }
 	ctx = r.Context()
 	ctx = context.WithValue(ctx, LoggedInUser, u)
 	r = r.WithContext(ctx)
@@ -131,7 +127,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		switch e := err.(type) {
 		case ForbiddenError:
 			switch r.URL.Path {
-
 			default:
 				http.Redirect(w, r, "/login", http.StatusFound)
 				// status := e.Status()

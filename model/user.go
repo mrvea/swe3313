@@ -3,22 +3,28 @@ package model
 import (
 	"sync"
 
-	authboss "gopkg.in/authboss.v1"
-
 	log "github.com/class/pizza/logger"
 	"github.com/class/pizza/types"
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
+	authboss "gopkg.in/authboss.v1"
 )
 
 const (
 	USER_TABLE        = "users"
 	USER_INSERT_QUERY = `
 		INSERT INTO ` + USER_TABLE + `
+		(
+			role,
+			email,
+			first_name,
+			last_name,
+			password
+			)
 		VALUES(
 			:role,
 			:email,
-			:firlst_name,
+			:first_name,
 			:last_name,
 			:password
 		)
@@ -33,11 +39,12 @@ var (
 type User struct {
 	DefaultModel
 
-	Role               string `db:"role_slug"`
+	Role               string
 	FirstName          string `db:"first_name"`
 	LastName           string `db:"last_name"`
 	Password           string
 	Email              string
+	LastLoggedIn       types.NullString `db:"last_logged_in"`
 	RecoverToken       types.NullString `db:"recover_token" json:"-"`
 	RecoverTokenExpiry types.NullTime   `db:"recover_token_expiry" json:"-"`
 
@@ -77,7 +84,7 @@ func (U *User) Populate(data map[string]interface{}) *User {
 func (U *User) Insert(optionals ...interface{}) (err error) {
 	var tx *sqlx.Tx
 	commit := false
-
+	U.SetCreateModifier(U)
 	optionals = getFirstOptional(tx, optionals)
 	if tx == nil {
 		tx, err = db.Beginx()
@@ -129,10 +136,13 @@ func (u *userTable) Insert(data map[string]interface{}) (err error) {
 
 //Interface with authboss register module
 func (u *userTable) Create(key string, attr authboss.Attributes) error {
-	data := make(map[string]interface{}, 0)
-	data["Email"] = attr["email"]
-	data["Password"] = attr["password"]
-	err := u.Insert(data)
+	U := NewUser()
+	U.SetFromData(&U.Email, attr, "email")
+	U.SetFromData(&U.Password, attr, "password")
+	U.Role = "new"
+	U.FirstName = "web"
+	U.LastName = "team"
+	err := U.Insert()
 	return err
 }
 

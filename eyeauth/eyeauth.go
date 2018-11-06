@@ -2,8 +2,10 @@ package eyeauth
 
 import (
 	"errors"
+	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/class/pizza/logger"
 	"github.com/class/pizza/storer"
@@ -76,9 +78,9 @@ func New() error {
 	storer.SetUpStores()
 	ab.CookieStoreMaker = storer.NewCookieStorer
 	ab.SessionStoreMaker = storer.NewSessionStorer
-	ab.MountPath = "/auth"
-	ab.AuthLoginOKPath = "/account"
-	ab.RootURL = "http://localhost:8080/home"
+	ab.MountPath = "/"
+	ab.AuthLoginOKPath = "/dash"
+	ab.RootURL = "http://localhost:8080/dash"
 	ab.ViewsPath = "templates"
 	ab.XSRFName = "csrf_token"
 	ab.Mailer = authboss.LogMailer(os.Stdout)
@@ -99,6 +101,9 @@ func New() error {
 	ab.XSRFMaker = func(_ http.ResponseWriter, r *http.Request) string {
 		return nosurf.Token(r)
 	}
+	ab.Layout.Funcs(template.FuncMap{
+		"Itoa": strconv.Itoa,
+	})
 	e.AB = ab
 	snapshot = e
 	return nil

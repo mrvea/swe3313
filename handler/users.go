@@ -12,7 +12,7 @@ import (
 )
 
 func UserRedirectHome(e *env.Env, w http.ResponseWriter, r *http.Request) error {
-	http.Redirect(w, r, "/home", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/dash", http.StatusPermanentRedirect)
 	return nil
 }
 

@@ -11,6 +11,18 @@
 -- 	created
 -- 	modified
 -- 	last_logged_in
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_slug` varchar(40) NOT NULL DEFAULT 'viewer',
+  `first_name` varchar(100),
+  `last_name` varchar(100),
+  `last_logged_in` datetime DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(60) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 -- PRODUCTS
 -- 	id
 -- 	name

@@ -70,7 +70,7 @@
         <div id="footer">
             <hr class="red-faded-border" />
             <div class="footer-content">
-                <p>&copy; 2017 All Rights Reserved.  <img src="images/coca-cola-footer-logo.png" alt="The Coca-Cola Company"></p>
+                <p>&copy; 2017 All Rights Reserved.</p>
             </div>
         </div>
     </div><!--/close #everything-right-->

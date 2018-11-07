@@ -1,0 +1,31 @@
+<div id='content-body'>
+  <mat-sidenav-container 
+    [hasBackdrop]='false'>
+    <mat-sidenav 
+      #mainSidenav 
+      [fixedInViewport]='true'
+       
+      mode="side">
+      <h1 class='text-center'> <a routerLink="/">Geb's Pizza</a> </h1>
+
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let item of MenuList"
+          [routerLink] = "item.Path">
+          {{ item.Name }}
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar>
+        <button mat-icon-button (click)='mainSidenav.toggle(); UpdateWidth();'>
+            <mat-icon fontIcon='menu'>menu</mat-icon>
+          </button>
+        <h1 class='text-center full-width'> {{ Title }} </h1>
+      </mat-toolbar>
+      <div #mainContent class='eye-route-content'
+        >
+        <router-outlet #o="outlet"></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,42 @@
+<div id="pizza-selection-page">
+	<!-- <a 
+	  class='eye-tile'
+	  *ngFor="let pizza of pizzas" 
+	   >
+		<mat-card class='eye-item-move' >
+				<mat-card-title>
+					{{pizza.Name}}
+				</mat-card-title>
+				<mat-card-content>
+					{{ pizza.Price }}
+				</mat-card-content>
+		</mat-card>
+	</a>
+	<a  class='eye-tile' >
+		<mat-card class='eye-item-move' >
+				<mat-card-title>
+					Custom
+				</mat-card-title>
+		</mat-card>
+	</a> -->
+	<mat-toolbar>
+        <h1 class='text-center full-width'> {{ stage.Title }} </h1>
+         <button mat-icon-button>
+            Next
+          </button>
+      </mat-toolbar>
+	<mat-grid-list cols="4" gutterSize="10"  rowHeight="400px">
+		<mat-grid-tile *ngFor="let product of products" >
+			<mat-card class="example-card">
+			  <mat-card-header>
+			    <mat-card-title>{{product.Name}}</mat-card-title>
+			  </mat-card-header>
+			  <img mat-card-image src="/images/{{pizza.Image}}" [style.height.px]="180" alt="pizza">
+			 
+			  <mat-card-actions end>
+			    <button mat-button>Add {{ product.Price }}</button>
+			  </mat-card-actions>
+			</mat-card>
+		</mat-grid-tile>
+	</mat-grid-list>
+</div>

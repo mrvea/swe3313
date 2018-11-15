@@ -12,7 +12,8 @@ import {
   MatToolbarModule, MatFormFieldModule, MatSelectModule,
   MatGridListModule, MatIconModule, MatButtonModule,
   MatMenuModule, MatListModule, MatCardModule,
-  MatSidenavModule, MatDialogModule, MatInputModule
+  MatSidenavModule, MatDialogModule, MatInputModule,
+  MatDividerModule
 } from '@angular/material';
 import { UserComponent } from './user/user.component';
 import { CustomerComponent, CustomerLookupComponent } from './customer/customer.component';
@@ -21,8 +22,28 @@ import { CheckoutComponent } from './checkout/checkout.component';
 
 const APP_ROUTES: Routes = [
   {
-    path: "selection",
-    component: SelectionComponent
+    path: "menu",
+    component: SelectionComponent,
+    data: {
+      state: "Menu",
+      title: "Menu"
+    }
+  },
+  {
+    path: "crust",
+    component: SelectionComponent,
+    data: {
+      stage: "Crust",
+      title: 'Please choose a crust',
+    }
+  },
+  {
+    path: "toppings",
+    component: SelectionComponent, 
+    data: {
+      stage: "Toppings",
+      title: "Please select a topping"
+    }
   },
   {
     path: "",
@@ -62,7 +83,8 @@ const APP_ROUTES: Routes = [
     MatCardModule,
     MatSidenavModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatDividerModule
   ],
   providers: [],
   entryComponents: [CustomerLookupComponent],

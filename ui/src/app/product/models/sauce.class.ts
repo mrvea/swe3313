@@ -1,19 +1,26 @@
 import { Product, Productor } from "./product.class";
 
 export interface Saucerizer extends Productor {
-	Type?: SauceTypes;
+	Type?: SauceType;
 }
 
-export enum SauceTypes { //database?
+export enum SauceType { //database?
 	RED = "Tomato",
 	WHITE = "Alfredo",
 	Pink = "red/white"
 }
 export class Sauce extends Product implements Saucerizer {
-	Type: SauceTypes;
+	Type: SauceType;
 	constructor(options: Saucerizer = {}){
 		super(options);
 
-		this.Type = options.Type || SauceTypes.RED;
+		this.Type = options.Type || SauceType.RED;
+		this.Price = .99;
+	}
+	static types(): string[]{
+		return Object.keys(SauceType);
+	}
+	copy(): Sauce{
+		return new Sauce(this);
 	}
 }

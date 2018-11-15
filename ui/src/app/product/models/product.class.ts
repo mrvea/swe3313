@@ -51,4 +51,7 @@ export class Product implements Productor{
 		}
 		return new Date(strDate);
 	}
+	copy(): Product{
+		return new Product(this);
+	}
 }

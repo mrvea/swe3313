@@ -13,7 +13,7 @@
 -- 	last_logged_in
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_slug` varchar(40) NOT NULL DEFAULT 'viewer',
+  `role` varchar(40) NOT NULL DEFAULT 'viewer',
   `first_name` varchar(100),
   `last_name` varchar(100),
   `last_logged_in` datetime DEFAULT NULL,

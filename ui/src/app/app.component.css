@@ -1,0 +1,10 @@
+.mat-nav-list{
+	padding: 10px;
+}
+.field-list>*{
+	margin-top: 10px;
+}
+
+.mat-nav-list .field-list .mat-list-item:hover{
+	background: unset; 
+}

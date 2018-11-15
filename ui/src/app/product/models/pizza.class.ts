@@ -12,13 +12,13 @@ export interface Pizzariler extends Productor {
 export class Pizza extends Product implements Pizzariler{
 	Dough: Dough;
 	Sauce: Sauce;
-	Topppings: Topping[];
+	Toppings: Topping[];
 	constructor(options: Pizzariler = {}){
 		super(options);
 
 		this.Dough = options.Dough? new Dough(options.Dough): null;
 		this.Sauce = options.Sauce? new Sauce(options.Sauce): null;
-		this.Topppings = options.Toppings? this.setToppings(options.Toppings) :[];
+		this.Toppings = options.Toppings? this.setToppings(options.Toppings) :[];
 	}
 
 	setToppings(toppings: any[]){
@@ -28,5 +28,9 @@ export class Pizza extends Product implements Pizzariler{
 		return toppings.map(topping => {
 			return new Topping(topping);
 		});
+	}
+	copy(): Pizza{
+		console.log("copying: ", this);
+		return new Pizza(this);
 	}
 }

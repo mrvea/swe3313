@@ -15,7 +15,7 @@ export class Sauce extends Product implements Saucerizer {
 		super(options);
 
 		this.Type = options.Type || SauceType.RED;
-		this.Price = .99;
+		this.Price = .99;T
 	}
 	static types(): string[]{
 		return Object.keys(SauceType);

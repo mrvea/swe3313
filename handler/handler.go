@@ -123,6 +123,9 @@ func (h *Handler) Execute(w http.ResponseWriter, r *http.Request) error {
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := h.Execute(w, r)
+	if r.URL.Path == "/dash" {
+		return
+	}
 	if err != nil {
 		switch e := err.(type) {
 		case ForbiddenError:

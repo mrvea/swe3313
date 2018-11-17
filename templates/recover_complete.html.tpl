@@ -6,7 +6,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-        <title>Orb by Eventsphere</title>
+        <title>Geb's Pizza</title>
         <link rel="stylesheet" type="text/css" href="/styles/style.css">
         <link rel="stylesheet" type="text/css" href="/styles/framework.css">
         <link rel="stylesheet" type="text/css" href="/styles/owl.theme.css">

@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Coke IMC Welcome</title>
+  <title>Geb's Pizza welcome</title>
   <meta name="description" content="Coke IMC Welcome">
    <link rel="stylesheet" href="/assets/outdated-browser/outdatedbrowser.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheet.css">
   <link rel="stylesheet" type="text/css" href="juan.css">
   <link rel="stylesheet" type="text/css" href="welcome-portal-respo.css">
   <link rel="stylesheet" type="text/css" href="material.css">
-  <link rel="icon" type="image/png" href="/favicon.ico?v=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script
       src="//code.jquery.com/jquery-3.2.1.min.js"

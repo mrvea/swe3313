@@ -148,6 +148,7 @@ func (u *userTable) Create(key string, attr authboss.Attributes) error {
 
 func (u *userTable) Get(email string) (interface{}, error) {
 	U, err := u.GetByEmail(email)
+
 	if err != nil {
 		log.Info("Error getting user: ", err)
 		// TODO tj invalidate existing login if exists

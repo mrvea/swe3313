@@ -1,7 +1,26 @@
 <div class="customer-search-dialog">
 	<mat-form-field>
 		<mat-label>Customer Phone</mat-label>
-		<input placeholder="search" matInput name="phone" [formControl]="searchValue">
+		<input 
+    	matInput 
+    	placeholder="Search" 
+    	name="searchValue" 
+    	#autoCompleteInput
+    	[matAutocomplete]="listOptions"
+    	[formControl]="searchValue"/>
+    	<button mat-icon-button matSuffix (click)="toggle($event, listOptions)" tabindex="-1">
+    		<mat-icon >{{ !listOptions.isOpen ? 'arrow_drop_down' : 'arrow_drop_up'}}</mat-icon>
+    	</button>
+		<mat-autocomplete 
+			#listOptions="matAutocomplete"
+			class="dropdown-panel-custom"
+			(optionSelected) = "select($event)"
+			[autoActiveFirstOption]="true"
+			[displayWith]="displayFn">
+			<mat-option *ngFor="let option of list" [value]="option">
+				{{ displayFn(option) }}
+			</mat-option>
+		</mat-autocomplete>
 	</mat-form-field>
-	<button mat-raised-button >close</button>
+	<button mat-raised-button (click)="onNoClick()" >close</button>
 </div>

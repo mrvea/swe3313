@@ -1,0 +1,55 @@
+<div id="pizza-delivery-info-page">
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+    <mat-card [ngClass]='"forms"'>
+      <mat-card-content>
+        <mat-form-field [ngClass]="'full-width'">
+          <mat-label>{{fields.Name.Name}}</mat-label>
+          <input matInput [formControlName]="fields.Name.Name"/>
+          <mat-error *ngIf="form.get(fields.Name.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field [ngClass]="'full-width'">
+        <mat-label>{{fields.Address.Name}}</mat-label>
+          <input matInput [formControlName]="fields.Address.Name"/>
+          <mat-error *ngIf="form.get(fields.Address.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field [ngClass]="'full-width'">
+          <mat-label>{{fields.Address2.Name}}</mat-label>
+          <input matInput [formControlName]="fields.Address2.Name"/>
+          <mat-error *ngIf="form.get(fields.Address2.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field [ngClass]="'full-width'">
+          <mat-label>{{fields.City.Name}}</mat-label>
+          <input matInput [formControlName]="fields.City.Name"/>
+          <mat-error *ngIf="form.get(fields.City.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field [ngClass]="'full-width'">
+          <mat-label>{{fields.Phone.Name}}</mat-label>
+          <input matInput [formControlName]="fields.Phone.Name"/>
+          <mat-error *ngIf="form.get(fields.Phone.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="goBack(); $event.preventDefault() ">back</button>
+        <button *ngIf="customer && customer.ID" mat-raised-button>Edit</button>
+        <button mat-raised-button 
+          class="float-right" 
+          [routerLink]="[ '../payment' ]" 
+          [disabled]="form.invalid" 
+          (click)="$event.preventDefault()">Next</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  <pre>
+    {{ customer | json}}
+  </pre>
+</div>

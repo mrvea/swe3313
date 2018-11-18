@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../user/user.class';
 
 @Component({
   selector: 'app-checkout',
@@ -11,5 +12,6 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
   }
+
 
 }

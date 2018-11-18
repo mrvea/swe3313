@@ -4,33 +4,33 @@ import { Sauce, Saucerizer } from './sauce.class';
 import { Topping, Toppinger } from './topping.class';
 
 export interface Pizzariler extends Productor {
-	Dough?: Dougher;
-	Sauce?: Saucerizer;
-	Toppings?: Toppinger[];
+    Dough?: Dougher;
+    Sauce?: Saucerizer;
+    Toppings?: Toppinger[];
 }
 
-export class Pizza extends Product implements Pizzariler{
-	Dough: Dough;
-	Sauce: Sauce;
-	Toppings: Topping[];
-	constructor(options: Pizzariler = {}){
-		super(options);
+export class Pizza extends Product implements Pizzariler {
+    Dough: Dough;
+    Sauce: Sauce;
+    Toppings: Topping[];
+    constructor(options: Pizzariler = {}) {
+        super(options);
 
-		this.Dough = options.Dough? new Dough(options.Dough): null;
-		this.Sauce = options.Sauce? new Sauce(options.Sauce): null;
-		this.Toppings = options.Toppings? this.setToppings(options.Toppings) :[];
-	}
+        this.Dough = options.Dough ? new Dough(options.Dough) : null;
+        this.Sauce = options.Sauce ? new Sauce(options.Sauce) : null;
+        this.Toppings = options.Toppings ? this.setToppings(options.Toppings) : [];
+    }
 
-	setToppings(toppings: any[]){
-		if(toppings.length == 0){
-			return toppings;
-		}
-		return toppings.map(topping => {
-			return new Topping(topping);
-		});
-	}
-	copy(): Pizza{
-		console.log("copying: ", this);
-		return new Pizza(this);
-	}
+    setToppings(toppings: any[]) {
+        if (toppings.length === 0) {
+            return toppings;
+        }
+        return toppings.map(topping => {
+            return new Topping(topping);
+        });
+    }
+    copy(): Pizza {
+        console.log('copying: ', this);
+        return new Pizza(this);
+    }
 }

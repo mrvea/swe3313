@@ -20,41 +20,45 @@
 		</mat-card>
 	</a> -->
 	<mat-toolbar>
-		<button mat-icon-button *ngIf="stage.stage != 'menu'">
+		<button mat-icon-button *ngIf="stage.stage != 'menu'"
+		 [routerLink]="'../menu'">
             Menu
           </button>
         <h1 class='text-center full-width'> {{ stage.title }} </h1>
-        <button mat-icon-button>
+        <!-- <button mat-icon-button>
             Next
-          </button>
+          </button> -->
     </mat-toolbar>
     <ng-template [ngIf]="stage.stage == 'Toppings'" [ngIfElse]="singleLine">
-    	<div *ngFor="let sec of getKeys(products)">
-    		<h2>{{ sec }}</h2>
-    		<mat-grid-list cols="4" gutterSize="10"  row="1:1">
-				<mat-grid-tile *ngFor="let product of products[sec]" >
-					<mat-card class="example-card">
-					  <mat-card-header>
-					    <mat-card-title>{{product.Name}}</mat-card-title>
-					  </mat-card-header>
-					  <img mat-card-image src="/images/{{product.Image}}" [style.height.px]="180" alt="pizza">
-					 
-					  <mat-card-actions end>
-					    <button mat-button (click)="add(product)">Add {{ getPrice(product)  | currency }}</button>
-					    <mat-form-field appearance="outline" *ngIf="product.Dough">
-					    	<mat-label>Size</mat-label>
-					    	<mat-select [(ngModel)]="product.Dough.Size">
-						    	<mat-option *ngFor="let size of getDoughSize()" [value]="doughSize[size]">
-						    		{{ size | lowercase }}
-						    	</mat-option>
-						    </mat-select>
-					    </mat-form-field>
-					  </mat-card-actions>
-					</mat-card>
-				</mat-grid-tile>
-			</mat-grid-list>
-			<mat-divider></mat-divider>
-    	</div>
+			<ng-template ngFor let-sec [ngForOf]="getKeys(products)">
+				<div class="section">
+					<h2>{{ sec }}</h2>
+					<mat-grid-list cols="4" gutterSize="5"  rowHeight="300px" >
+						<mat-grid-tile *ngFor="let product of products[sec]" >
+							<mat-card class="example-card">
+								<mat-card-header>
+									<mat-card-title>{{product.Name}}</mat-card-title>
+								</mat-card-header>
+								<img mat-card-image src="/images/{{product.Image}}" [style.height.px]="180" alt="pizza">
+							
+								<mat-card-actions end>
+									<button mat-button (click)="add(product)">Add {{ getPrice(product)  | currency }}</button>
+									<mat-form-field appearance="outline" *ngIf="product.Dough">
+										<mat-label>Size</mat-label>
+										<mat-select [(ngModel)]="product.Dough.Size">
+											<mat-option *ngFor="let size of getDoughSize()" [value]="doughSize[size]">
+												{{ size | lowercase }}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</mat-card-actions>
+							</mat-card>
+						</mat-grid-tile>
+					</mat-grid-list>
+				
+				</div>
+				<mat-divider></mat-divider>
+			</ng-template>
     </ng-template>
     <ng-template #singleLine>
 		<mat-grid-list cols="4" gutterSize="10"  rowHeight="400px">

@@ -9,7 +9,7 @@
       <h1 class='text-center'> <a routerLink="/">Geb's Pizza</a> </h1>
 
       <mat-nav-list>
-        <a mat-list-item *ngFor="let item of MenuList"
+        <a mat-list-item *ngFor="let item of menuList"
           [routerLink] = "item.Path">
           {{ item.Name }}
         </a>
@@ -21,6 +21,7 @@
       [fixedInViewport]='true'
       mode="side">
       <mat-nav-list>
+          <button mat-raised-button color="primary" routerLink="./dash/checkout">Checkout</button>
           <ng-template ngFor let-item let-pIndex="index" [ngForOf]="order">
             <div>
               <h2 matLine>{{ item.Name }} <button mat-icon-button (click)="remove(item, pIndex)"><mat-icon>delete_forever</mat-icon></button></h2>
@@ -75,10 +76,10 @@
                 <mat-list dense>
                   <mat-list-item *ngFor="let topping of item.Toppings; let i = index;">
                     <p matLine>{{ topping.Name }}</p>
-                    <button mat-icon-button (click)="removeTopping(pIndex, i)"><mat-icon>close</mat-icon></button>
+                    <button mat-icon-button (click)="removeTopping(pIndex, topping)"><mat-icon>close</mat-icon></button>
                   </mat-list-item>
                   <mat-list-item>
-                    <a [routerLink]="['../', 'toppings']" [queryParams]="{p: pIndex}" ><mat-icon>add</mat-icon> Add a topping</a>
+                    <a [routerLink]="['./', 'dash', 'toppings']" [queryParams]="{p: pIndex}" ><mat-icon>add</mat-icon> Add a topping</a>
                   </mat-list-item>
                 </mat-list>
               </div>
@@ -93,9 +94,11 @@
         <button mat-icon-button (click)='mainSidenav.toggle()'>
             <mat-icon fontIcon='menu'>menu</mat-icon>
           </button>
-        <h1 class='text-center full-width'> {{ Title }} </h1>
-        <button mat-icon-button (click)='orderSidenav.toggle()'>
-            <mat-icon>shopping_cart</mat-icon><span *ngIf="order.length > 0">({{order.length}})</span>
+        <h1 class='text-center full-width'> {{ title }} </h1>
+        <h2 *ngIf="customer">{{(customer.FirstName || '') + ' ' + (customer.LastName || '')}}</h2>&nbsp;
+        {{price || '' | currency}}
+        <button mat-icon-button (click)='orderSidenav.toggle()'  *ngIf="order.length > 0">
+            <mat-icon>shopping_cart</mat-icon><span>({{ order.length }})</span>
           </button>
       </mat-toolbar>
       <div #mainContent class='eye-route-content'

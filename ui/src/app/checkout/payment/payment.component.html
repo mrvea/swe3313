@@ -1,0 +1,77 @@
+<div id="pizza-payment-info-page">
+    <div class='question-section col-4' *ngIf="!isManual && !isCash">
+      <button mat-raised-button (click)="processCard($event)">
+        Card
+      </button>
+      <button mat-raised-button (click)="setManual($event)">
+        Card Manual
+      </button>
+      <button mat-raised-button (click)="processCheck($event)">
+        Check
+      </button>
+      <button mat-raised-button (click)="processCash($event)">
+        Cash
+      </button>
+    </div>
+  <form [formGroup]='form' (ngSubmit)="onSubmit($event)" *ngIf="isManual">
+    <mat-card class='forms'>
+      <mat-card-content>
+        <mat-form-field [ngClass]="'full-width'"> 
+          <mat-label>{{fields.Name.Label}}</mat-label>
+          <input matInput [formControlName]="fields.Name.Name"/>
+          <mat-error *ngIf="form.get(fields.Name.Name)?.invalid">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field [ngClass]="'full-width'">
+          <mat-label>{{fields.Number.Label}}</mat-label>
+          <input matInput [formControlName]="fields.Number.Name" max=16/>
+          <mat-error *ngIf="form.get(fields.Number.Name).hasError('required')">
+            This field is required
+          </mat-error>
+          <mat-error *ngIf="form.get(fields.Number.Name).hasError('maxlength')">
+            Exceeded max length 16
+          </mat-error>
+        </mat-form-field>
+        <div class="col-2">
+            <mat-form-field [ngClass]="'full-width'">
+                <mat-label>{{ fields.Exp.Label }}</mat-label>
+                <input matInput [matDatepicker]="startPicker" [formControlName]="fields.Exp.Name">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+                <mat-error *ngIf="form.get(fields.Exp.Name)?.invalid">
+                    This field is required
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field [ngClass]="'full-width'">
+                <mat-label>{{fields.Code.Label}}</mat-label>
+                <input matInput [formControlName]="fields.Code.Name" [maxlength]="card? card.code : 3"/>
+                <mat-error *ngIf="form.get(fields.Code.Name)?.invalid">
+                  This field is required
+                </mat-error>
+              </mat-form-field> 
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="goBack();$event.preventDefault();">Back</button>
+        <button mat-raised-button [ngClass]="'float-right'" >Submit</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  <form *ngIf="isCash" >
+    <mat-card class='forms'>
+      <mat-card-content>
+        <mat-form-field appearance="outline" [ngClass]="'full-width'">
+          <mat-label>Amount</mat-label>
+          <input matInput name="amount" [formControl]="givenValue"/>
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <!-- <span matPrefix>$&nbsp;</span> -->
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="getChange();">Get Change</button>
+        <button mat-raised-button (click)="done()" [ngClass]="'float-right'">Done</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

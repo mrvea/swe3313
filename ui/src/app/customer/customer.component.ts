@@ -1,88 +1,54 @@
-import { Inject, Component, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Inject, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteTrigger } from '@angular/material';
 import { Customer } from './customer.class';
 import { FormControl } from '@angular/forms';
 
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { OrderService } from '../order.service';
+import { User } from '../user/user.class';
+import { Model } from '../common/model.class';
+import { UserService } from '../user/user.service';
+import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CustomerLookupComponent } from './customer-lookup-dialog.component';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css']
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent {
 
-  constructor(
-  	public dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
-  }
-
-  search(e){
-  	console.log(e);
-  	const dialogRef = this.dialog.open(CustomerLookupComponent, {
-      width: '250px',
-      data: new Customer()
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-          console.log(result);
-      }
-    });
-  }
-}
-
-const format = {
-	pattern: [3, 3, 4],
-	open: ["(", ") ", "-"]
-}
-
-@Component({
-  selector: 'customer-lookup-dialog',
-  templateUrl: './customer-lookup-dialog.component.html',
-})
-
-export class CustomerLookupComponent implements OnInit {
-   	searchValue: FormControl
     constructor(
-      public dialogRef: MatDialogRef<CustomerLookupComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: Customer
-    ) {
-    	this.searchValue = new FormControl();
+        public dialog: MatDialog,
+        private os: OrderService,
+        private us: UserService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) { }
+
+    search(e) {
+        console.log(e);
+        this.us.getCustomers().subscribe(list => {
+            console.log(list);
+            this.openDialog(list);
+        });
     }
 
-    ngOnInit():void {
-    	this.searchValue.valueChanges.pipe(
-    		debounceTime(500),
-    		map(val => {
-    			val = val.replace(/\D/g, '').replace(/\s/g, "");
-    			return val;
-    		}),
-    		distinctUntilChanged()
-    	).subscribe(v => {
-    		console.log(v);
-    		this.searchValue.patchValue(this.formatPhone(v));
-    	})
+    openDialog(list: User[]) {
+        const dialogRef = this.dialog.open(CustomerLookupComponent, {
+                width: '250px',
+                data: {
+                        list: list
+                }
+    });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.os.setCustomer(new User(result));
+                console.log(result);
+            }
+                this.router.navigate(['../menu'], {relativeTo: this.route});
+        });
     }
-
-    formatPhone(val, depth: number = 0){
-    	console.log(val);
-    	console.log(depth);
-    	if(val.length == 0){
-    		return "";
-    	}
-    	const n = val.substring(0, format.pattern[depth]);
-
-    	return format.open[depth] + n + this.formatPhone(val.substring(format.pattern[depth]), ++depth);
-    }
-
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
-
-     done() {
-    }
-
 }
